@@ -27,9 +27,9 @@ public class PedidoServiceImpl implements PedidoService{
         this.clienteService = clienteService;
     }
 
-    public Pedido calcPedidoClientes(){
+    public Pedido calcPedidoClientes(Pedido pedido){
 
-        List<Cliente> clientes = null;
+
 
 /*
         response.getClientes().get(0).setNome("Gui");
@@ -45,27 +45,25 @@ public class PedidoServiceImpl implements PedidoService{
 
         response.setFrete(5.00);
         response.setDesconto(2.00);
+
+ */
         Double valorTotal= 0.0;
         Double proporcao = 0.0;
-        Double freteDividido = 0.0;
-        for (int i = 0; i < response.getClientes().toArray().length; i++) {
-            proporcao = 100.0 / clientes.toArray().length;
-            freteDividido = response.getFrete() / clientes.toArray().length;
+        for (int i = 0; i < pedido.getClientes().toArray().length; i++) {
+            proporcao = 100.0 / pedido.getClientes().toArray().length;
             Double valorTotalCliente = 0.0;
-            for (int a = 0; a < response.getClientes().get(i).getItens().toArray().length; a++) {
+            for (int a = 0; a < pedido.getClientes().get(i).getItens().toArray().length; a++) {
 
-                valorTotalCliente = valorTotalCliente + response.getClientes().get(i).getItens().get(a).getValorItem();
-
-                valorTotal = valorTotal + clientes.get(i).getItens().get(a).getValorItem();
-
+                valorTotalCliente = valorTotalCliente + pedido.getClientes().get(i).getItens().get(a).getValorItem();
+                //valorTotal = valorTotal + pedido.getClientes().get(i).getItens().get(a).getValorItem();
             }
-            //response.getClientes().get(i).setValorTotalCliente((valorTotalCliente + freteDividido)/proporcao );
+            pedido.getClientes().get(i).setValorTotalCliente((valorTotalCliente/proporcao) * pedido.getValorTotal());
         }
-        response.setValorTotal(valorTotal + response.getFrete() - response.getDesconto());
+        //pedido.setValorTotal(valorTotal + pedido.getFrete() - pedido.getDesconto());
 
 
-*/
-        return null;
+
+        return pedido;
     }
 
     @Override

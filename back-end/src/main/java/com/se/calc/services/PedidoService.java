@@ -6,7 +6,7 @@ import com.se.calc.models.Pedido;
 import java.util.List;
 
 public interface PedidoService {
-    Pedido calcPedidoClientes();
+    Pedido calcPedidoClientes(Pedido pedido);
     List <Pedido> getClientes();
     Pedido salvar(Pedido pedido);
 }

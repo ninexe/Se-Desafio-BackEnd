@@ -24,7 +24,7 @@ public class Pedido {
     private Double frete;
     @Column(name = "nr_valor_total", nullable = false)
     private Double valorTotal;
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pedido", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<Cliente> clientes =  new ArrayList();
 
 }

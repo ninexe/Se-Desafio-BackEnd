@@ -30,12 +30,12 @@ public class PedidoController {
         List<Pedido> list = repository.findAll();
         return ResponseEntity.ok(list);
     }
-
-    @PostMapping("/salvar")
+    */
+    @PostMapping("/contar")
     public ResponseEntity<Pedido> salvar(@RequestBody Pedido pedido){
-        Pedido entidade = repository.save(pedido);
+        Pedido entidade = pedidoService.calcPedidoClientes(pedido);
         return ResponseEntity.ok(entidade);
-    }*/
+    }
     @PostMapping(value = "/pedidosave")
     @ResponseStatus(HttpStatus.CREATED)
     public Pedido Add(@RequestBody Pedido pedido) {
