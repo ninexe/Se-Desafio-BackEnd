@@ -74,7 +74,7 @@ public class PedidoServiceImpl implements PedidoService{
     @Override
     @Transactional
     public Pedido salvar(final Pedido pedido) {
-        Pedido entity = new Pedido();
+       /* Pedido entity = new Pedido();
 
         var clientes = clienteService.salvarClientes(pedido.getClientes());
 
@@ -82,9 +82,9 @@ public class PedidoServiceImpl implements PedidoService{
         entity.setDesconto(pedido.getDesconto());
         entity.setFrete(pedido.getFrete());
         entity.setValorTotal(pedido.getValorTotal());
-        entity.setClientes(clientes);
+        entity.setClientes(clientes);*/
 
-        return pedidoRepository.save(entity);
+        return pedidoRepository.save(pedido);
     }
 
 

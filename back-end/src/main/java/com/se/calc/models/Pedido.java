@@ -13,18 +13,19 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "pedido")
 public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cd_pedido", nullable = false)
-    private Long cdPedido;
+    @Column(name = "pedido_id", nullable = false)
+    private Long id;
     @Column(name = "nr_desconto", nullable = false)
     private Double desconto;
     @Column(name = "nr_frete", nullable = false)
     private Double frete;
     @Column(name = "nr_valor_total", nullable = false)
     private Double valorTotal;
-    @OneToMany(mappedBy = "pedido", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
-    private List<Cliente> clientes =  new ArrayList();
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Cliente> clientes = new ArrayList<>();
 
 }

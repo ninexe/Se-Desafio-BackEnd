@@ -13,20 +13,18 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "item")
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cd_item", nullable = false)
-    private Long cdItem;
+    @Column(name = "item_id", nullable = false)
+    private Long id;
     @Column(name = "nm_item", nullable = false)
     private String nomeItem;
     @Column(name = "nr_valor", nullable = false)
     private Double valorItem;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinTable(name = "item_has_cliente",	joinColumns = { @JoinColumn(name = "cd_item") },inverseJoinColumns = { @JoinColumn(name = "cd_cliente") })
-    @JsonIgnoreProperties
-    @JsonBackReference
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinTable(name = "cliente_has_item",	joinColumns = { @JoinColumn(name = "cliente_id") },inverseJoinColumns = { @JoinColumn(name = "item_id") })
     private Cliente cliente;
 }
