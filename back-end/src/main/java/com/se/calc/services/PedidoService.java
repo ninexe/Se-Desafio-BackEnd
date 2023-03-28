@@ -1,12 +1,9 @@
 package com.se.calc.services;
 
-import com.se.calc.models.Cliente;
 import com.se.calc.models.Pedido;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface PedidoService {
-    Pedido calcPedidoClientes();
-    List <Pedido> getClientes();
-    Pedido salvar(Pedido pedido);
+    Pedido calcPedidoClientes(Pedido pedido);
 }
