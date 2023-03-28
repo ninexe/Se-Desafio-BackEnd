@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 public class PagamentoController {
 
     private PagamentoService pagamentoService;
-    @PostMapping("/gerarPagamento")
-    public ResponseEntity pagar(@RequestBody Pagamento pagamento){
-        ResponseEntity response = pagamentoService.criaPagamento(pagamento);
-        return new ResponseEntity(response,response.getStatusCode());
+    @PostMapping("/gerar-pagamento")
+    public ResponseEntity<String> pagar(@RequestBody Pagamento pagamento){
+        String linkPagamento = pagamentoService.criaPagamento(pagamento);
+        return ResponseEntity.ok(linkPagamento);
     }
 }

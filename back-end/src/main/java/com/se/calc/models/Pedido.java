@@ -16,7 +16,7 @@ public class Pedido {
     private Long id;
     private BigDecimal desconto;
     private BigDecimal frete;
-    private Double valorTotal;
+    private BigDecimal valorTotal;
     private List<Cliente> clientes = new ArrayList<>();
 
 }

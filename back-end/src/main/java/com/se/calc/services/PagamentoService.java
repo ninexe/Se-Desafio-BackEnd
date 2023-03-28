@@ -5,5 +5,5 @@ import com.se.calc.models.Pedido;
 import org.springframework.http.ResponseEntity;
 
 public interface PagamentoService {
-    ResponseEntity criaPagamento(Pagamento pagamento);
+    String criaPagamento(Pagamento pagamento);
 }

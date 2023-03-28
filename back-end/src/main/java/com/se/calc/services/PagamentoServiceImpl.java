@@ -1,5 +1,9 @@
 package com.se.calc.services;
 
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -16,6 +20,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,8 +36,11 @@ public class PagamentoServiceImpl implements PagamentoService{
     private String tipoPagamento;
     @SneakyThrows
     @Override
-    public ResponseEntity criaPagamento(Pagamento pagamento) {
-        if (!(tokenPagamento.isEmpty() || tokenPagamento == null)){
+    public String criaPagamento(final Pagamento pagamento) {
+        if (pagamento == null){
+            throw new IllegalStateException("Informe um pagamento!");
+        }
+        if (tokenPagamento != null && !tokenPagamento.isEmpty()){
 
             //Para configurar AcessToken adicione no application.propeties
             MercadoPagoConfig.setAccessToken(tokenPagamento);
@@ -49,37 +57,35 @@ public class PagamentoServiceImpl implements PagamentoService{
                             .build();
             try {
                 //se conseguiu gerar, ele envia a request
-                Payment payment = client.create(createRequest);
-                String responseString = payment.getResponse().getContent();
-                return ResponseEntity.ok("Venda gerada corretamente, verifique seu email para realizar o pagamento");
+                client.create(createRequest);
+                return "Venda gerada corretamente, verifique seu email para realizar o pagamento";
             } catch (MPApiException ex) {
-                return new ResponseEntity(ex.getApiResponse().getContent(), HttpStatus.BAD_REQUEST);
+                throw new MPApiException(ex.getApiResponse().getContent(), ex.getApiResponse());
             } catch (MPException ex) {
                 ex.printStackTrace();
-                return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+                throw new MPException(ex.getMessage(), ex);
             }
-            //Caso não tenha um mercado livre AcessToken configurado, gera QrCode em forma de homologação.
-        }else if(!(pagamento == null)){
-            String url = "https://link.mercadopago.com.br/ninexe";
-
-            // Configurações do QR Code
-            int width = 200;
-            int height = 200;
-            String format = "png";
-
-            // Cria a matriz de bits do QR Code
-            BitMatrix bitMatrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE,width,height);
-
-            // Converte a matriz de bits em uma imagem BufferedImage
-            BufferedImage image = MatrixToImageWriter.toBufferedImage(bitMatrix);
-
-            // Converte a imagem em base64
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(image, format, baos);
-            String base64Image = Base64.encodeBase64String(baos.toByteArray());
-
-            return ResponseEntity.ok(base64Image);
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+
+        //Caso não tenha um mercado livre AcessToken configurado, gera QrCode em forma de homologação.
+        String url = "Digite_Seu_Link_Aqui";
+
+        // Configurações do QR Code
+        int width = 200;
+        int height = 200;
+        String format = "png";
+
+        // Cria a matriz de bits do QR Code
+        BitMatrix bitMatrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE,width,height);
+
+        // Converte a matriz de bits em uma imagem BufferedImage
+        BufferedImage image = MatrixToImageWriter.toBufferedImage(bitMatrix);
+
+        // Converte a imagem em base64
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(image, format, baos);
+        String base64Image = Base64.encodeBase64String(baos.toByteArray());
+
+        return base64Image;
     }
 }

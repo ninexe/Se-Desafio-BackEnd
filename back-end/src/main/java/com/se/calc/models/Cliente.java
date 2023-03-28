@@ -3,6 +3,8 @@ package com.se.calc.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,8 @@ import java.util.List;
 public class Cliente {
     private Long id;
     private String nome;
-    private Double valorTotalCliente;
+    private String email;
+    private BigDecimal valorTotalCliente;
     private List<Item> itens =  new ArrayList<>();
 }
 //
